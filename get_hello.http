@@ -1,0 +1,5 @@
+### Get Request avec header
+# @no-log
+GET http://127.0.0.1:3000/hello
+Accept: application/json
+x-internal-token: SUPER-SECRET-TOKEN

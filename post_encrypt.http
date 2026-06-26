@@ -1,0 +1,11 @@
+### Get Request avec header
+POST http://127.0.0.1:3000/encrypt
+Accept: application/json
+Content-Type: application/json
+x-internal-token: SUPER-SECRET-TOKEN
+
+{
+    "wallet_id": "JAMBON",
+    "target_consumer_id": "JAMBON",
+    "claims": "JAMBON"  
+}
