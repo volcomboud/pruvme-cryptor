@@ -1,0 +1,170 @@
+openapi: 3.1.0
+info:
+  title: Pruvme - Cryptor - OpenAPI 3.2
+  description: |-
+    Api utiliser pour l'encryption et la décryption dans le cadre du Projet pilote PRUVME.
+    Petit contrat quie devra être implanter dans l'orchestrateur JAVA afin de communiquer avec le système cryptographique 
+
+    Some useful links:
+    - [Pruvme-Cryptor Github](https://github.com/volcomboud/pruvme-cryptor)
+    - [OpenAPI 3.2 Specification](https://spec.openapis.org/oas/v3.2.0.html)
+  termsOfService: https://swagger.io/terms/
+  contact:
+    email: pruv_mvs@protonmail.com
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.13
+externalDocs:
+  description: Find out more about Swagger
+  url: https://swagger.io
+servers:
+  - url: http://127.0.0.1:3000
+    description: Localhost
+tags:
+  - name: décryption
+    description: Service qui gère les actions de décryption
+  - name: encryption
+    description: Service qui gère les actions de l'encryption
+  - name: testing
+    description: endpoint utile au développement, à retirer pour la prod
+paths:
+  /decrypte:
+    post:
+      tags:
+        - décryption
+      summary: Décrypter le claim reçu
+      description: Décrypte le claim reçu
+      operationId: decrypeClaim
+      requestBody:
+        description: Le claim à décrypter
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/claim_securise'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/claim_non_securise'
+        '400':
+          description: Invalid input
+        '422':
+          description: Validation exception
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /encrypte:
+    post:
+      tags:
+        - encryption
+      summary: Encrypter l'information reçu.
+      description: Encrypter l'information reçu.
+      operationId: encrypteClaim
+      requestBody:
+        description: L'information à encrypter
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/claim_non_securise'
+        required: true
+      responses:
+        '200':
+          description: L'information a été encrypté en succès
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/encryption_complete'
+        '400':
+          description: Invalid status value
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /hello:
+    get:
+      tags:
+        - testing
+      summary: Utiliser pour les tests de load, SANDBOX a modifier comme on veut
+      description: DEV SHIT
+      operationId: inutile
+      responses:
+        '200':
+          description: OK
+components:
+  schemas:
+    claim_securise:
+      required:
+        - token_encrypte
+      type: object
+      properties:
+        token_encrypte:
+          type: string
+          example: "z6MkhaXgBZD...[base64_encoded_nonce_plus_ciphertext]...y3z"
+    claim_non_securise:
+      required:
+        - wallet_id
+        - target_consumer_id
+        - claims
+      type: object
+      properties:
+        wallet_id:
+          type: string
+          example: "did:key:z6MkhaXgBZDvotDkL5257faiztiuC2ZX711KqPj9u11"
+        target_consumer_id:
+          type: string
+          example: "www.somewebsite.com"
+        claims:
+          type: object
+          example:
+            is_journalist: true
+            name: "Jimmy"
+            badge_id: "778899"
+    encryption_complete:
+      required:
+        - token_encrypte
+        - expiration_date
+      type: object
+      properties:
+        token_encrypte:
+          type: string
+          example: "z6MkhaXgBZD...[base64_encoded_nonce_plus_ciphertext]...y3z"
+        expiration_date:
+          type: integer
+          format: int64
+          example: 1783197971
+    ApiResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        type:
+          type: string
+        message:
+          type: string
+    Error:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+      required:
+        - code
+        - message
+  requestBodies:
+    encrypte:
+      description: Le claim non sécruriser que l'on veut encrypter
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/claim_non_securise'
