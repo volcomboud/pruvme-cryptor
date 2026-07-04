@@ -77,7 +77,7 @@ async fn main () {
     // Faire un Router pour exposer endpoint
     let app = Router::new()
         .route("/hello", get(hello_world))
-        .route("/encrypt", post(encryption_service::encryption_service_handler))
+        .route("/encrypte", post(encryption_service::encryption_service_handler))
         .with_state(app_state)
         .layer(middleware::from_fn(authentification_static))
         .layer(middleware::from_fn(logging_middleware));
