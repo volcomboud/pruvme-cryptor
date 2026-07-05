@@ -21,6 +21,8 @@ externalDocs:
 servers:
   - url: http://127.0.0.1:3000
     description: Localhost
+security:
+  - TokenInterne: []
 tags:
   - name: décryption
     description: Service qui gère les actions de décryption
@@ -168,3 +170,9 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/claim_non_securise'
+  securitySchemes:
+    TokenInterne:
+      type: apiKey
+      in: header
+      name: x-internal-token
+      description: Jeton de sécurité interne requis pour communiquer avec l'API Cryptor
