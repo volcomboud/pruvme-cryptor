@@ -1,0 +1,30 @@
+### Post Encrypte avec header
+POST http://127.0.0.1:3000/encrypte
+Accept: application/json
+Content-Type: application/json
+x-internal-token: SUPER-SECRET-TOKEN
+
+{
+  "wallet_id": "8743b52063cd84097a65d1633f5c74f5",
+  "target_consumer_id": "www.boulette.com",
+  "claims": {
+    "name": "Jimmy",
+    "is_over_18": false,
+    "is_a_journalist": true,
+    "is_part_of_the_AA": false
+  }
+}
+
+> {%
+    client.global.set("token_encrypte", response.body.token_encrypte)
+  %}
+
+### Post Decrypte avec header
+POST http://127.0.0.1:3000/decrypte
+Accept: application/json
+Content-Type: application/json
+x-internal-token: SUPER-SECRET-TOKEN
+
+{
+  "token_encrypte": "{{token_encrypte}}"
+}

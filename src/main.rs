@@ -1,4 +1,5 @@
 mod encryption_service;
+mod decryption_service;
 
 use axum::{
     http::{Request, StatusCode},
@@ -7,13 +8,9 @@ use axum::{
     middleware::{self, Next},
     routing::{get, post},
     Router,
-    extract::State,
-    Json
 };
 use serde::{Deserialize, Serialize};
-use serde_json::Value;
 use std::{time::Instant, sync::atomic::{AtomicI64, Ordering}, env};
-use std::time::SystemTime;
 use dotenvy::dotenv;
 
 static  NEXT_REQUEST_ID: AtomicI64 = AtomicI64::new(1);
@@ -77,7 +74,8 @@ async fn main () {
     // Faire un Router pour exposer endpoint
     let app = Router::new()
         .route("/hello", get(hello_world))
-        .route("/encrypte", post(encryption_service::encryption_service_handler))
+        .route("/decrypte", post(decryption_service::service_decryption_handler))
+        .route("/encrypte", post(encryption_service::service_encryption_handler))
         .with_state(app_state)
         .layer(middleware::from_fn(authentification_static))
         .layer(middleware::from_fn(logging_middleware));
