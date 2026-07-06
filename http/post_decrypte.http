@@ -1,0 +1,9 @@
+### Post Decrypte avec header
+POST http://127.0.0.1:3000/decrypte
+Accept: application/json
+Content-Type: application/json
+x-internal-token: SUPER-SECRET-TOKEN
+
+{
+  "token_encrypte": "zW_fYPnVGDV_jHScrmUf966Mx03N4fLzNWIohMOqJvEvpv5D4m8zy6y5UXoWMkeXF_TNH17ctC1le7Jt5YdkSuSL2DeqOviUNkYiOsm1i_b1GDfrYl7Pq5iF_-eRBxSEoZYdTWaiG3Vg2N8P9zWfnJHVR2DNRcbVo3cF-8D8sy6raHNgbXTEyvn2J-ZFTjdTqkhgO366zTpkkhvlY1lOwjF4K1qna5p-pa39LUBnfqkpIcU"
+}

@@ -1,0 +1,8 @@
+{
+  "wallet_id": "JAMBON",
+  "target_consumer_id": "JAMBON",
+  "claims": {
+    "name": "Jimmy",
+    "is_over_18": false
+  }
+}
